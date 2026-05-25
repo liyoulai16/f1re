@@ -12,7 +12,7 @@ class ArticleController extends Controller
     {
         $articles = Article::published()
             ->orderBy('published_at', 'desc')
-            ->paginate(6);
+            ->paginate(3);
 
         return response()->json($articles);
     }

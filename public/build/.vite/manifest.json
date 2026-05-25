@@ -1,11 +1,63 @@
 {
   "resources/js/app.js": {
-    "file": "assets/app-DG5eTPVR.js",
+    "file": "assets/app-B8V26gqj.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
+    "dynamicImports": [
+      "resources/js/views/admin/AdminLayout.vue",
+      "resources/js/views/admin/AdminDashboard.vue",
+      "resources/js/views/admin/AdminUsers.vue",
+      "resources/js/views/admin/AdminUserCreate.vue",
+      "resources/js/views/admin/AdminUserEdit.vue"
+    ],
     "css": [
-      "assets/app-B65L35P1.css"
+      "assets/app-CWwcZRs0.css"
+    ]
+  },
+  "resources/js/views/admin/AdminDashboard.vue": {
+    "file": "assets/AdminDashboard-ClzwPzX6.js",
+    "name": "AdminDashboard",
+    "src": "resources/js/views/admin/AdminDashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/views/admin/AdminLayout.vue": {
+    "file": "assets/AdminLayout-DG7MIQOh.js",
+    "name": "AdminLayout",
+    "src": "resources/js/views/admin/AdminLayout.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/views/admin/AdminUserCreate.vue": {
+    "file": "assets/AdminUserCreate-nFqIfJeQ.js",
+    "name": "AdminUserCreate",
+    "src": "resources/js/views/admin/AdminUserCreate.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/views/admin/AdminUserEdit.vue": {
+    "file": "assets/AdminUserEdit-BJlhQwZ-.js",
+    "name": "AdminUserEdit",
+    "src": "resources/js/views/admin/AdminUserEdit.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/views/admin/AdminUsers.vue": {
+    "file": "assets/AdminUsers-Mnl4B2iJ.js",
+    "name": "AdminUsers",
+    "src": "resources/js/views/admin/AdminUsers.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
     ]
   }
 }

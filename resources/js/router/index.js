@@ -3,13 +3,26 @@ import { useAuth } from '../composables/useAuth';
 import Home from '../views/Home.vue';
 import ArticleDetail from '../views/ArticleDetail.vue';
 import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
 import Dashboard from '../views/Dashboard.vue';
 
 const routes = [
-    { path: '/', name: 'home', component: Home, meta: { requiresAuth: true } },
-    { path: '/article/:slug', name: 'article', component: ArticleDetail, meta: { requiresAuth: true } },
+    { path: '/', name: 'home', component: Home },
+    { path: '/article/:slug', name: 'article', component: ArticleDetail },
     { path: '/login', name: 'login', component: Login, meta: { guest: true } },
+    { path: '/register', name: 'register', component: Register, meta: { guest: true } },
     { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
+    {
+        path: '/admin',
+        component: () => import('../views/admin/AdminLayout.vue'),
+        meta: { requiresAuth: true, requiresAdmin: true },
+        children: [
+            { path: '', name: 'admin-dashboard', component: () => import('../views/admin/AdminDashboard.vue') },
+            { path: 'users', name: 'admin-users', component: () => import('../views/admin/AdminUsers.vue') },
+            { path: 'users/create', name: 'admin-user-create', component: () => import('../views/admin/AdminUserCreate.vue') },
+            { path: 'users/:id/edit', name: 'admin-user-edit', component: () => import('../views/admin/AdminUserEdit.vue') },
+        ]
+    },
 ];
 
 const router = createRouter({
@@ -18,7 +31,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    const { isAuthenticated, isLoading, checkAuth } = useAuth();
+    const { isAuthenticated, isLoading, checkAuth, user } = useAuth();
 
     if (isLoading.value) {
         await checkAuth();
@@ -26,6 +39,8 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.meta.requiresAuth && !isAuthenticated.value) {
         next('/login');
+    } else if (to.meta.requiresAdmin && user.value?.role !== 'admin') {
+        next('/');
     } else if (to.meta.guest && isAuthenticated.value) {
         next('/');
     } else {
