@@ -53,6 +53,42 @@
                         </div>
                         博客管理
                     </router-link>
+                    <router-link
+                        to="/admin/drafts"
+                        active-class="!bg-white/15 !text-white shadow-lg shadow-indigo-900/20 backdrop-blur-sm"
+                        class="flex items-center px-4 py-3 rounded-xl text-indigo-200 hover:bg-white/10 hover:text-white transition-all duration-200 group"
+                    >
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-400/20 to-purple-400/20 flex items-center justify-center mr-3 group-hover:from-indigo-400/30 group-hover:to-purple-400/30 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                        草稿箱
+                    </router-link>
+                    <router-link
+                        to="/admin/categories"
+                        active-class="!bg-white/15 !text-white shadow-lg shadow-indigo-900/20 backdrop-blur-sm"
+                        class="flex items-center px-4 py-3 rounded-xl text-indigo-200 hover:bg-white/10 hover:text-white transition-all duration-200 group"
+                    >
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-400/20 to-purple-400/20 flex items-center justify-center mr-3 group-hover:from-indigo-400/30 group-hover:to-purple-400/30 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                            </svg>
+                        </div>
+                        分类管理
+                    </router-link>
+                    <router-link
+                        to="/admin/comments"
+                        active-class="!bg-white/15 !text-white shadow-lg shadow-indigo-900/20 backdrop-blur-sm"
+                        class="flex items-center px-4 py-3 rounded-xl text-indigo-200 hover:bg-white/10 hover:text-white transition-all duration-200 group"
+                    >
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-400/20 to-purple-400/20 flex items-center justify-center mr-3 group-hover:from-indigo-400/30 group-hover:to-purple-400/30 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                            </svg>
+                        </div>
+                        评论管理
+                    </router-link>
                 </nav>
                 <div class="p-4 border-t border-white/10">
                     <router-link to="/" class="flex items-center px-4 py-3 rounded-xl text-indigo-300 hover:bg-white/10 hover:text-white transition-all duration-200 group">
@@ -68,21 +104,33 @@
         </aside>
 
         <!-- Main content -->
-        <main class="flex-1 ml-64 bg-gray-50 min-h-screen">
+        <main class="flex-1 ml-64 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors">
             <!-- Top bar -->
-            <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/60 sticky top-0 z-30">
+            <header class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm border-b border-gray-200/60 dark:border-gray-700/60 sticky top-0 z-30 transition-colors">
                 <div class="flex items-center justify-between px-8 py-4">
-                    <h2 class="text-lg font-semibold text-gray-800">管理后台</h2>
+                    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">管理后台</h2>
                     <div class="flex items-center space-x-4">
+                        <button
+                            @click="toggleDark"
+                            class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                            :title="isDark ? '切换亮色模式' : '切换暗色模式'"
+                        >
+                            <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                            </svg>
+                        </button>
                         <div class="flex items-center space-x-2">
                             <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
                                 {{ user?.name?.charAt(0) }}
                             </div>
-                            <span class="text-sm text-gray-600 font-medium">{{ user?.name }}</span>
+                            <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">{{ user?.name }}</span>
                         </div>
                         <button
                             @click="handleLogout"
-                            class="text-sm text-gray-400 hover:text-red-500 transition-colors"
+                            class="text-sm text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                         >
                             退出
                         </button>
@@ -101,8 +149,10 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useAuth } from '../../composables/useAuth';
+import { useDarkMode } from '../../composables/useDarkMode';
 
 const { user, logout } = useAuth();
+const { isDark, toggleDark } = useDarkMode();
 const router = useRouter();
 
 async function handleLogout() {

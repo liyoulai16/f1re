@@ -14,7 +14,8 @@ class AdminArticleController extends Controller
         $perPage = $request->input('per_page', 10);
         $perPage = min(max((int)$perPage, 5), 50);
 
-        $query = Article::with('user:id,name,email');
+        $query = Article::with('user:id,name,email', 'category:id,name,slug')
+            ->withCount('likes', 'favorites');
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -32,6 +33,10 @@ class AdminArticleController extends Controller
             }
         }
 
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
         $articles = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
         return response()->json($articles);
@@ -39,29 +44,33 @@ class AdminArticleController extends Controller
 
     public function show($id)
     {
-        $article = Article::with('user:id,name,email')->findOrFail($id);
+        $article = Article::with('user:id,name,email', 'category:id,name,slug')->findOrFail($id);
 
         return response()->json(['data' => $article]);
     }
 
     public function store(Request $request)
     {
+        $isPublishing = $request->boolean('is_published');
+
         $request->validate([
-            'title' => 'required|string|max:255',
-            'excerpt' => 'required|string|max:500',
-            'body' => 'required|string',
+            'title' => $isPublishing ? 'required|string|max:255' : 'nullable|string|max:255',
+            'excerpt' => $isPublishing ? 'required|string|max:500' : 'nullable|string|max:500',
+            'body' => $isPublishing ? 'required|string' : 'nullable|string',
             'cover_image' => 'nullable|string|max:500',
             'is_published' => 'boolean',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
-        $slug = Str::slug($request->title) . '-' . Str::random(6);
+        $slug = Str::slug($request->title ?: 'draft') . '-' . Str::random(6);
 
         $article = Article::create([
             'user_id' => $request->user()->id,
-            'title' => $request->title,
+            'category_id' => $request->category_id,
+            'title' => $request->title ?? '',
             'slug' => $slug,
-            'excerpt' => $request->excerpt,
-            'body' => $request->body,
+            'excerpt' => $request->excerpt ?? '',
+            'body' => $request->body ?? '',
             'cover_image' => $request->cover_image,
             'is_published' => $request->input('is_published', false),
             'published_at' => $request->input('is_published', false) ? now() : null,
@@ -74,18 +83,22 @@ class AdminArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
+        $isPublishing = $request->boolean('is_published');
+
         $request->validate([
-            'title' => 'required|string|max:255',
-            'excerpt' => 'required|string|max:500',
-            'body' => 'required|string',
+            'title' => $isPublishing ? 'required|string|max:255' : 'nullable|string|max:255',
+            'excerpt' => $isPublishing ? 'required|string|max:500' : 'nullable|string|max:500',
+            'body' => $isPublishing ? 'required|string' : 'nullable|string',
             'cover_image' => 'nullable|string|max:500',
             'is_published' => 'boolean',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
-        $article->title = $request->title;
-        $article->excerpt = $request->excerpt;
-        $article->body = $request->body;
+        $article->title = $request->title ?? '';
+        $article->excerpt = $request->excerpt ?? '';
+        $article->body = $request->body ?? '';
         $article->cover_image = $request->cover_image;
+        $article->category_id = $request->category_id;
 
         $wasPublished = $article->is_published;
         $article->is_published = $request->input('is_published', false);

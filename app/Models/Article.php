@@ -11,6 +11,7 @@ class Article extends Model
 
     protected $fillable = [
         'user_id',
+        'category_id',
         'title',
         'slug',
         'excerpt',
@@ -28,6 +29,26 @@ class Article extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(ArticleLike::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(ArticleFavorite::class);
     }
 
     public function scopePublished($query)

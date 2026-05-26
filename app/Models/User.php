@@ -49,4 +49,14 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    public function likedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_likes')->withTimestamps();
+    }
+
+    public function favoritedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_favorites')->withTimestamps();
+    }
 }

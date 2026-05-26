@@ -31,6 +31,12 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
+        path: '/my-favorites',
+        name: 'my-favorites',
+        component: () => import('../views/MyFavorites.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
         path: '/admin',
         component: () => import('../views/admin/AdminLayout.vue'),
         meta: { requiresAuth: true, requiresAdmin: true },
@@ -42,6 +48,11 @@ const routes = [
             { path: 'articles', name: 'admin-articles', component: () => import('../views/admin/AdminArticles.vue') },
             { path: 'articles/create', name: 'admin-article-create', component: () => import('../views/admin/AdminArticleForm.vue') },
             { path: 'articles/:id/edit', name: 'admin-article-edit', component: () => import('../views/admin/AdminArticleForm.vue') },
+            { path: 'drafts', name: 'admin-drafts', component: () => import('../views/admin/AdminDrafts.vue') },
+            { path: 'categories', name: 'admin-categories', component: () => import('../views/admin/AdminCategories.vue') },
+            { path: 'categories/create', name: 'admin-category-create', component: () => import('../views/admin/AdminCategoryForm.vue') },
+            { path: 'categories/:id/edit', name: 'admin-category-edit', component: () => import('../views/admin/AdminCategoryForm.vue') },
+            { path: 'comments', name: 'admin-comments', component: () => import('../views/admin/AdminComments.vue') },
         ]
     },
 ];

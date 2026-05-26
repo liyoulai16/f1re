@@ -1,13 +1,20 @@
 {
-  "_CoverImageUpload-CaWW3qle.js": {
-    "file": "assets/CoverImageUpload-CaWW3qle.js",
-    "name": "CoverImageUpload",
+  "_QuillEditor-!~{00g}~.js": {
+    "file": "assets/QuillEditor-g2YT0ePd.css",
+    "src": "_QuillEditor-!~{00g}~.js"
+  },
+  "_QuillEditor-DCztr0Mi.js": {
+    "file": "assets/QuillEditor-DCztr0Mi.js",
+    "name": "QuillEditor",
     "imports": [
       "resources/js/app.js"
+    ],
+    "css": [
+      "assets/QuillEditor-g2YT0ePd.css"
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-B9EzYS1P.js",
+    "file": "assets/app-tjyIRbkr.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -15,6 +22,7 @@
       "resources/js/views/MyArticles.vue",
       "resources/js/views/MyArticleForm.vue",
       "resources/js/views/MyArticleForm.vue",
+      "resources/js/views/MyFavorites.vue",
       "resources/js/views/admin/AdminLayout.vue",
       "resources/js/views/admin/AdminDashboard.vue",
       "resources/js/views/admin/AdminUsers.vue",
@@ -22,24 +30,29 @@
       "resources/js/views/admin/AdminUserEdit.vue",
       "resources/js/views/admin/AdminArticles.vue",
       "resources/js/views/admin/AdminArticleForm.vue",
-      "resources/js/views/admin/AdminArticleForm.vue"
+      "resources/js/views/admin/AdminArticleForm.vue",
+      "resources/js/views/admin/AdminDrafts.vue",
+      "resources/js/views/admin/AdminCategories.vue",
+      "resources/js/views/admin/AdminCategoryForm.vue",
+      "resources/js/views/admin/AdminCategoryForm.vue",
+      "resources/js/views/admin/AdminComments.vue"
     ],
     "css": [
-      "assets/app-CJG1IZXW.css"
+      "assets/app-CYMeLVi4.css"
     ]
   },
   "resources/js/views/MyArticleForm.vue": {
-    "file": "assets/MyArticleForm-DDV-XhPD.js",
+    "file": "assets/MyArticleForm-GzkKyAyK.js",
     "name": "MyArticleForm",
     "src": "resources/js/views/MyArticleForm.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_CoverImageUpload-CaWW3qle.js"
+      "_QuillEditor-DCztr0Mi.js"
     ]
   },
   "resources/js/views/MyArticles.vue": {
-    "file": "assets/MyArticles-jMEyb1-S.js",
+    "file": "assets/MyArticles-BDb5kvsA.js",
     "name": "MyArticles",
     "src": "resources/js/views/MyArticles.vue",
     "isDynamicEntry": true,
@@ -47,18 +60,27 @@
       "resources/js/app.js"
     ]
   },
+  "resources/js/views/MyFavorites.vue": {
+    "file": "assets/MyFavorites-BHe7ArL4.js",
+    "name": "MyFavorites",
+    "src": "resources/js/views/MyFavorites.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/js/views/admin/AdminArticleForm.vue": {
-    "file": "assets/AdminArticleForm-2YM-jk1l.js",
+    "file": "assets/AdminArticleForm-D8fa-Van.js",
     "name": "AdminArticleForm",
     "src": "resources/js/views/admin/AdminArticleForm.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_CoverImageUpload-CaWW3qle.js"
+      "_QuillEditor-DCztr0Mi.js"
     ]
   },
   "resources/js/views/admin/AdminArticles.vue": {
-    "file": "assets/AdminArticles-Cm2hmUlb.js",
+    "file": "assets/AdminArticles-BJw3AdmF.js",
     "name": "AdminArticles",
     "src": "resources/js/views/admin/AdminArticles.vue",
     "isDynamicEntry": true,
@@ -66,8 +88,35 @@
       "resources/js/app.js"
     ]
   },
+  "resources/js/views/admin/AdminCategories.vue": {
+    "file": "assets/AdminCategories-JcShYs38.js",
+    "name": "AdminCategories",
+    "src": "resources/js/views/admin/AdminCategories.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/views/admin/AdminCategoryForm.vue": {
+    "file": "assets/AdminCategoryForm-Ck9LRPkv.js",
+    "name": "AdminCategoryForm",
+    "src": "resources/js/views/admin/AdminCategoryForm.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/views/admin/AdminComments.vue": {
+    "file": "assets/AdminComments-DqFMAHxh.js",
+    "name": "AdminComments",
+    "src": "resources/js/views/admin/AdminComments.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/js/views/admin/AdminDashboard.vue": {
-    "file": "assets/AdminDashboard-BeoOVfoH.js",
+    "file": "assets/AdminDashboard-CITxO8LM.js",
     "name": "AdminDashboard",
     "src": "resources/js/views/admin/AdminDashboard.vue",
     "isDynamicEntry": true,
@@ -75,8 +124,17 @@
       "resources/js/app.js"
     ]
   },
+  "resources/js/views/admin/AdminDrafts.vue": {
+    "file": "assets/AdminDrafts-aVSLlAh5.js",
+    "name": "AdminDrafts",
+    "src": "resources/js/views/admin/AdminDrafts.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/js/views/admin/AdminLayout.vue": {
-    "file": "assets/AdminLayout-IwH0IK_G.js",
+    "file": "assets/AdminLayout-Cc1UM0GQ.js",
     "name": "AdminLayout",
     "src": "resources/js/views/admin/AdminLayout.vue",
     "isDynamicEntry": true,
@@ -85,7 +143,7 @@
     ]
   },
   "resources/js/views/admin/AdminUserCreate.vue": {
-    "file": "assets/AdminUserCreate-Cju8uYz_.js",
+    "file": "assets/AdminUserCreate-DrcgUgk9.js",
     "name": "AdminUserCreate",
     "src": "resources/js/views/admin/AdminUserCreate.vue",
     "isDynamicEntry": true,
@@ -94,7 +152,7 @@
     ]
   },
   "resources/js/views/admin/AdminUserEdit.vue": {
-    "file": "assets/AdminUserEdit-DmJ2_NTE.js",
+    "file": "assets/AdminUserEdit-Db1bgfQR.js",
     "name": "AdminUserEdit",
     "src": "resources/js/views/admin/AdminUserEdit.vue",
     "isDynamicEntry": true,
@@ -103,7 +161,7 @@
     ]
   },
   "resources/js/views/admin/AdminUsers.vue": {
-    "file": "assets/AdminUsers-DPre4uvd.js",
+    "file": "assets/AdminUsers-CplGATX-.js",
     "name": "AdminUsers",
     "src": "resources/js/views/admin/AdminUsers.vue",
     "isDynamicEntry": true,

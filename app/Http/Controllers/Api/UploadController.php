@@ -19,4 +19,17 @@ class UploadController extends Controller
             'url' => '/storage/' . $path,
         ]);
     }
+
+    public function editorImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,jpg,png,gif,webp|max:5120',
+        ]);
+
+        $path = $request->file('image')->store('uploads', 'public');
+
+        return response()->json([
+            'url' => '/storage/' . $path,
+        ]);
+    }
 }
