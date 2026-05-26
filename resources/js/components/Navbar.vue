@@ -18,8 +18,11 @@
                             </router-link>
                         </template>
                         <template v-else>
+                            <router-link to="/my-articles" class="text-gray-600 hover:text-indigo-600 transition font-medium">
+                                我的博客
+                            </router-link>
                             <router-link to="/dashboard" class="text-gray-600 hover:text-indigo-600 transition font-medium">
-                                我的
+                                个人中心
                             </router-link>
                         </template>
                         <button
@@ -67,8 +70,11 @@
                         </router-link>
                     </template>
                     <template v-else>
+                        <router-link to="/my-articles" class="block py-2 text-gray-600 hover:text-indigo-600" @click="mobileOpen = false">
+                            我的博客
+                        </router-link>
                         <router-link to="/dashboard" class="block py-2 text-gray-600 hover:text-indigo-600" @click="mobileOpen = false">
-                            我的
+                            个人中心
                         </router-link>
                     </template>
                     <button @click="handleLogout" class="block py-2 text-gray-600 hover:text-red-600">

@@ -22,6 +22,49 @@
         25% { transform: translateX(-4px); }
         75% { transform: translateX(4px); }
     }
+    @keyframes fade-in-up {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce-in {
+        0% { opacity: 0; transform: scale(0.3); }
+        50% { transform: scale(1.05); }
+        70% { transform: scale(0.9); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes bounce-slow {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse-slow {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+    @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes typing {
+        0% { stroke-dashoffset: 50; opacity: 0; }
+        50% { opacity: 1; }
+        100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @keyframes draw {
+        0% { stroke-dashoffset: 226; }
+        100% { stroke-dashoffset: 0; }
+    }
+    @keyframes slide-in-left {
+        0% { opacity: 0; transform: translateX(-30px); }
+        100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slide-in-right {
+        0% { opacity: 0; transform: translateX(30px); }
+        100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes scale-in {
+        0% { opacity: 0; transform: scale(0.9); }
+        100% { opacity: 1; transform: scale(1); }
+    }
     .animate-float {
         animation: float 6s ease-in-out infinite;
     }
@@ -32,9 +75,106 @@
     .animate-shake {
         animation: shake 0.3s ease-in-out;
     }
+    .animate-fade-in-up {
+        animation: fade-in-up 0.6s ease-out forwards;
+    }
+    .animate-bounce-in {
+        animation: bounce-in 0.8s ease-out forwards;
+    }
+    .animate-bounce-slow {
+        animation: bounce-slow 3s ease-in-out infinite;
+    }
+    .animate-pulse-slow {
+        animation: pulse-slow 4s ease-in-out infinite;
+    }
+    .animate-spin-slow {
+        animation: spin-slow 12s linear infinite;
+    }
+    .animate-typing {
+        stroke-dasharray: 50;
+        animation: typing 2s ease-in-out infinite;
+    }
+    .animate-typing-delayed {
+        stroke-dasharray: 50;
+        animation: typing 2s ease-in-out infinite;
+        animation-delay: 0.5s;
+    }
+    .animate-draw {
+        stroke-dasharray: 226;
+        animation: draw 3s ease-in-out infinite alternate;
+    }
+    .animate-slide-in-left {
+        animation: slide-in-left 0.4s ease-out forwards;
+    }
+    .animate-slide-in-right {
+        animation: slide-in-right 0.4s ease-out forwards;
+    }
+    .animate-scale-in {
+        animation: scale-in 0.3s ease-out forwards;
+    }
 }
 
 @layer components {
+    .btn-primary {
+        @apply bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-2.5 px-5 rounded-lg font-medium text-sm
+               shadow-md shadow-indigo-200/50 hover:shadow-lg hover:shadow-indigo-300/50
+               hover:-translate-y-0.5 active:translate-y-0
+               transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+    }
+
+    .btn-secondary {
+        @apply bg-white text-gray-700 py-2.5 px-5 rounded-lg font-medium text-sm border border-gray-200
+               shadow-sm hover:shadow-md hover:border-gray-300 hover:bg-gray-50
+               hover:-translate-y-0.5 active:translate-y-0
+               transition-all duration-300;
+    }
+
+    .btn-danger {
+        @apply bg-gradient-to-r from-red-500 to-pink-500 text-white py-2.5 px-5 rounded-lg font-medium text-sm
+               shadow-md shadow-red-200/50 hover:shadow-lg hover:shadow-red-300/50
+               hover:-translate-y-0.5 active:translate-y-0
+               transition-all duration-300;
+    }
+
+    .btn-success {
+        @apply bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2.5 px-5 rounded-lg font-medium text-sm
+               shadow-md shadow-green-200/50 hover:shadow-lg hover:shadow-green-300/50
+               hover:-translate-y-0.5 active:translate-y-0
+               transition-all duration-300;
+    }
+
+    .card-hover {
+        @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:shadow-indigo-100/50;
+    }
+
+    .input-animated {
+        @apply w-full px-4 py-2.5 border border-gray-200 rounded-lg
+               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none
+               transition-all duration-300 bg-gray-50/50 focus:bg-white
+               focus:shadow-md focus:shadow-indigo-50;
+    }
+
+    .btn-ripple {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-ripple::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    .btn-ripple:active::after {
+        width: 300px;
+        height: 300px;
+    }
+
     .prose h2 {
         @apply text-xl font-bold text-gray-900 mt-8 mb-4;
     }

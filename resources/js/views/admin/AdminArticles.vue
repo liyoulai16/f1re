@@ -1,12 +1,9 @@
 <template>
     <div>
         <div class="flex items-center justify-between mb-8">
-            <h1 class="text-2xl font-bold text-gray-900">用户管理</h1>
-            <router-link
-                to="/admin/users/create"
-                class="btn-primary"
-            >
-                新建用户
+            <h1 class="text-2xl font-bold text-gray-900">博客管理</h1>
+            <router-link to="/admin/articles/create" class="btn-primary">
+                新建文章
             </router-link>
         </div>
 
@@ -17,19 +14,19 @@
                     <input
                         v-model="search"
                         type="text"
-                        placeholder="搜索用户名或邮箱..."
+                        placeholder="搜索文章标题或摘要..."
                         class="input-animated"
                         @input="debouncedSearch"
                     />
                 </div>
                 <select
-                    v-model="roleFilter"
+                    v-model="statusFilter"
                     class="px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-300 hover:border-indigo-300 cursor-pointer"
-                    @change="fetchUsers(1)"
+                    @change="fetchArticles(1)"
                 >
-                    <option value="">全部角色</option>
-                    <option value="admin">管理员</option>
-                    <option value="user">普通用户</option>
+                    <option value="">全部状态</option>
+                    <option value="published">已发布</option>
+                    <option value="draft">草稿</option>
                 </select>
             </div>
         </div>
@@ -45,50 +42,39 @@
                 <thead class="bg-gray-50 border-b border-gray-200">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">昵称</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">邮箱</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">角色</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标题</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">作者</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">注册时间</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    <tr v-for="u in users" :key="u.id" class="hover:bg-indigo-50/30 transition-all duration-200">
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ u.id }}</td>
-                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ u.name }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ u.email }}</td>
+                    <tr v-for="article in articles" :key="article.id" class="hover:bg-indigo-50/30 transition-all duration-200">
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ article.id }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900 max-w-xs truncate">{{ article.title }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ article.user?.name || '未知' }}</td>
                         <td class="px-6 py-4">
                             <span
-                                :class="u.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'"
+                                :class="article.is_published ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'"
                                 class="px-2 py-1 text-xs font-medium rounded-full"
                             >
-                                {{ u.role === 'admin' ? '管理员' : '用户' }}
+                                {{ article.is_published ? '已发布' : '草稿' }}
                             </span>
                         </td>
-                        <td class="px-6 py-4">
-                            <span
-                                :class="u.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
-                                class="px-2 py-1 text-xs font-medium rounded-full"
-                            >
-                                {{ u.is_active ? '正常' : '已禁用' }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(u.created_at) }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(article.created_at) }}</td>
                         <td class="px-6 py-4 text-right space-x-2">
                             <router-link
-                                :to="`/admin/users/${u.id}/edit`"
+                                :to="`/admin/articles/${article.id}/edit`"
                                 class="text-indigo-600 hover:text-indigo-800 text-sm font-medium transition-colors"
                             >
                                 编辑
                             </router-link>
                             <button
-                                v-if="u.id !== currentUser?.id"
-                                @click="handleToggleActive(u)"
-                                :class="u.is_active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'"
-                                class="text-sm font-medium transition-colors"
+                                @click="handleDelete(article)"
+                                class="text-red-600 hover:text-red-800 text-sm font-medium transition-colors"
                             >
-                                {{ u.is_active ? '禁用' : '启用' }}
+                                删除
                             </button>
                         </td>
                     </tr>
@@ -96,8 +82,8 @@
             </table>
 
             <!-- Empty state -->
-            <div v-if="users.length === 0" class="text-center py-12 text-gray-500">
-                暂无用户数据
+            <div v-if="articles.length === 0" class="text-center py-12 text-gray-500">
+                暂无文章数据
             </div>
 
             <!-- Pagination -->
@@ -107,7 +93,7 @@
                     :total-pages="totalPages"
                     :total="totalItems"
                     :per-page="perPage"
-                    @page-change="fetchUsers"
+                    @page-change="fetchArticles"
                     @per-page-change="handlePerPageChange"
                 />
             </div>
@@ -117,16 +103,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { getAdminUsers, toggleAdminUserActive } from '../../api';
-import { useAuth } from '../../composables/useAuth';
+import { getAdminArticles, deleteAdminArticle } from '../../api';
 import Pagination from '../../components/Pagination.vue';
 
-const { user: currentUser } = useAuth();
-
-const users = ref([]);
+const articles = ref([]);
 const loading = ref(true);
 const search = ref('');
-const roleFilter = ref('');
+const statusFilter = ref('');
 const currentPage = ref(1);
 const totalPages = ref(1);
 const totalItems = ref(0);
@@ -137,20 +120,20 @@ let searchTimeout = null;
 function debouncedSearch() {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
-        fetchUsers(1);
+        fetchArticles(1);
     }, 300);
 }
 
-async function fetchUsers(page) {
+async function fetchArticles(page) {
     loading.value = true;
     try {
-        const response = await getAdminUsers(page, search.value, roleFilter.value, perPage.value);
-        users.value = response.data.data;
+        const response = await getAdminArticles(page, search.value, statusFilter.value, perPage.value);
+        articles.value = response.data.data;
         currentPage.value = response.data.current_page;
         totalPages.value = response.data.last_page;
         totalItems.value = response.data.total;
     } catch (error) {
-        console.error('Failed to fetch users:', error);
+        console.error('Failed to fetch articles:', error);
     } finally {
         loading.value = false;
     }
@@ -158,15 +141,16 @@ async function fetchUsers(page) {
 
 function handlePerPageChange(newPerPage) {
     perPage.value = newPerPage;
-    fetchUsers(1);
+    fetchArticles(1);
 }
 
-async function handleToggleActive(u) {
+async function handleDelete(article) {
+    if (!confirm(`确定要删除《${article.title}》吗？`)) return;
     try {
-        const response = await toggleAdminUserActive(u.id);
-        u.is_active = response.data.is_active;
+        await deleteAdminArticle(article.id);
+        fetchArticles(currentPage.value);
     } catch (error) {
-        alert(error.response?.data?.message || '操作失败');
+        alert(error.response?.data?.message || '删除失败');
     }
 }
 
@@ -176,6 +160,6 @@ function formatDate(dateStr) {
 }
 
 onMounted(() => {
-    fetchUsers(1);
+    fetchArticles(1);
 });
 </script>

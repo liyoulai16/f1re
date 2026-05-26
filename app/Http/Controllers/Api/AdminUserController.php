@@ -11,6 +11,9 @@ class AdminUserController extends Controller
 {
     public function index(Request $request)
     {
+        $perPage = $request->input('per_page', 10);
+        $perPage = min(max((int)$perPage, 5), 50);
+
         $query = User::query();
 
         if ($request->has('search') && $request->search) {
@@ -25,7 +28,7 @@ class AdminUserController extends Controller
             $query->where('role', $request->role);
         }
 
-        $users = $query->orderBy('created_at', 'desc')->paginate(10);
+        $users = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
         return response()->json($users);
     }

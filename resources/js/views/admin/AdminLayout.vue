@@ -41,6 +41,18 @@
                         </div>
                         用户管理
                     </router-link>
+                    <router-link
+                        to="/admin/articles"
+                        active-class="!bg-white/15 !text-white shadow-lg shadow-indigo-900/20 backdrop-blur-sm"
+                        class="flex items-center px-4 py-3 rounded-xl text-indigo-200 hover:bg-white/10 hover:text-white transition-all duration-200 group"
+                    >
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-400/20 to-purple-400/20 flex items-center justify-center mr-3 group-hover:from-indigo-400/30 group-hover:to-purple-400/30 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                            </svg>
+                        </div>
+                        博客管理
+                    </router-link>
                 </nav>
                 <div class="p-4 border-t border-white/10">
                     <router-link to="/" class="flex items-center px-4 py-3 rounded-xl text-indigo-300 hover:bg-white/10 hover:text-white transition-all duration-200 group">

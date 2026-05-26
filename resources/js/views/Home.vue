@@ -3,13 +3,13 @@
         <!-- Hero Section -->
         <div class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
             <div class="absolute inset-0">
-                <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-                <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-pink-300/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+                <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse-slow"></div>
+                <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-pink-300/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-400/10 rounded-full blur-3xl"></div>
             </div>
             <div class="relative max-w-4xl mx-auto px-4 py-20 text-center">
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">欢迎来到我的博客</h1>
-                <p class="text-lg text-white/80 max-w-2xl mx-auto">分享技术见解，记录成长点滴</p>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight animate-fade-in-up">欢迎来到我的博客</h1>
+                <p class="text-lg text-white/80 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.2s;">分享技术见解，记录成长点滴</p>
             </div>
             <!-- Wave divider -->
             <div class="absolute bottom-0 left-0 right-0">
@@ -39,100 +39,43 @@
                 </div>
 
                 <!-- Pagination -->
-                <div v-if="totalPages > 1" class="flex justify-center items-center mt-12">
-                    <nav class="flex items-center space-x-1">
-                        <!-- Previous -->
-                        <button
-                            @click="goToPage(currentPage - 1)"
-                            :disabled="currentPage === 1"
-                            class="px-3 py-2 rounded-lg text-gray-500 hover:bg-indigo-50 hover:text-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed transition"
-                        >
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                            </svg>
-                        </button>
-
-                        <!-- Page numbers -->
-                        <template v-for="page in displayedPages" :key="page">
-                            <span v-if="page === '...'" class="px-3 py-2 text-gray-400">...</span>
-                            <button
-                                v-else
-                                @click="goToPage(page)"
-                                :class="page === currentPage
-                                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
-                                    : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-600'"
-                                class="w-10 h-10 rounded-lg font-medium transition"
-                            >
-                                {{ page }}
-                            </button>
-                        </template>
-
-                        <!-- Next -->
-                        <button
-                            @click="goToPage(currentPage + 1)"
-                            :disabled="currentPage === totalPages"
-                            class="px-3 py-2 rounded-lg text-gray-500 hover:bg-indigo-50 hover:text-indigo-600 disabled:opacity-40 disabled:cursor-not-allowed transition"
-                        >
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </button>
-                    </nav>
-                </div>
+                <Pagination
+                    v-if="totalItems > 0"
+                    :current-page="currentPage"
+                    :total-pages="totalPages"
+                    :total="totalItems"
+                    :per-page="perPage"
+                    :per-page-options="[6, 9, 12, 18, 24]"
+                    @page-change="goToPage"
+                    @per-page-change="handlePerPageChange"
+                    class="mt-12"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { getArticles } from '../api';
 import ArticleCard from '../components/ArticleCard.vue';
+import Pagination from '../components/Pagination.vue';
 
 const articles = ref([]);
 const loading = ref(true);
 const currentPage = ref(1);
 const totalPages = ref(1);
+const totalItems = ref(0);
+const perPage = ref(6);
 
-const displayedPages = computed(() => {
-    const total = totalPages.value;
-    const current = currentPage.value;
-    const pages = [];
-
-    if (total <= 7) {
-        for (let i = 1; i <= total; i++) pages.push(i);
-        return pages;
-    }
-
-    pages.push(1);
-
-    if (current > 3) {
-        pages.push('...');
-    }
-
-    const start = Math.max(2, current - 1);
-    const end = Math.min(total - 1, current + 1);
-
-    for (let i = start; i <= end; i++) {
-        pages.push(i);
-    }
-
-    if (current < total - 2) {
-        pages.push('...');
-    }
-
-    pages.push(total);
-
-    return pages;
-});
-
-async function fetchArticles(page) {
+async function fetchArticles(page, pp) {
     loading.value = true;
     try {
-        const response = await getArticles(page);
+        const response = await getArticles(page, pp || perPage.value);
         articles.value = response.data.data;
         currentPage.value = response.data.current_page;
         totalPages.value = response.data.last_page;
+        totalItems.value = response.data.total;
     } catch (error) {
         console.error('Failed to fetch articles:', error);
     } finally {
@@ -144,6 +87,11 @@ function goToPage(page) {
     if (page < 1 || page > totalPages.value) return;
     fetchArticles(page);
     window.scrollTo({ top: 300, behavior: 'smooth' });
+}
+
+function handlePerPageChange(newPerPage) {
+    perPage.value = newPerPage;
+    fetchArticles(1, newPerPage);
 }
 
 onMounted(() => {
